@@ -2078,19 +2078,6 @@ export default function Portfolio() {
                       <h3 className="text-lg font-bold text-gray-900 mb-2">{phase.phase}</h3>
                       <p className="text-gray-600 text-sm mb-4">{phase.description}</p>
                       <div className="text-xs text-gray-500 mb-4">
-                        <Clock className="w-3 h-3 inline mr-1" />
-                        {phase.duration}
-                      </div>
-                      <ul className="text-xs text-gray-500 space-y-1">
-                        {phase.activities.map((activity, idx) => (
-                          <li key={idx} className="flex items-center">
-                            <CheckCircle className="w-3 h-3 mr-1 text-green-500" />
-                            {activity}
-                          </li>
-                        ))}
-                      </ul>
-                      <Separator className="my-3" />
-                      <div className="text-xs text-gray-600">
                         <strong>Deliverables:</strong>
                         <ul className="mt-1 space-y-1">
                           {phase.deliverables.map((deliverable, idx) => (
@@ -2895,6 +2882,67 @@ export default function Portfolio() {
                 </div>
               )}
             </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Mobile Navigation Drawer */}
+      <AnimatePresence>
+        {isNavOpen && (
+          <motion.div
+            className="fixed inset-0 z-[99] bg-black/40 md:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={toggleNav}
+          >
+            <motion.nav
+              className="fixed top-0 left-0 h-full w-64 bg-white/95 shadow-2xl p-6 z-[100] flex flex-col"
+              initial={{ x: -300 }}
+              animate={{ x: 0 }}
+              exit={{ x: -300 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <button
+                className="self-end mb-6 p-2 rounded hover:bg-gray-100"
+                onClick={toggleNav}
+                aria-label="Close navigation"
+              >
+                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                  <line x1="6" y1="18" x2="18" y2="6" />
+                </svg>
+              </button>
+              {/* Brand Logo */}
+              <div className="mb-8 flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">HS</span>
+                </div>
+                <span className="font-bold text-lg text-gray-900">Harsh Shah</span>
+              </div>
+              {/* Navigation Items */}
+              <div className="flex-1 space-y-2">
+                {navigationItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => {
+                      scrollToSection(item.id)
+                      setIsNavOpen(false)
+                    }}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-all duration-200 ${
+                      activeSection === item.id
+                        ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
+                        : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                    }`}
+                  >
+                    <span>{item.icon}</span>
+                    <span>{item.label}</span>
+                  </button>
+                ))}
+              </div>
+            </motion.nav>
           </motion.div>
         )}
       </AnimatePresence>
