@@ -75,6 +75,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState("hero")
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isNavOpen, setIsNavOpen] = useState(false) // State for mobile nav toggle
+  const toggleNav = () => {
+  setIsNavOpen(!isNavOpen)
+}
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
   const [currentCaseStudy, setCurrentCaseStudy] = useState(0)
   const [searchTerm, setSearchTerm] = useState("")
@@ -577,9 +581,27 @@ export default function Portfolio() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      {/* Slim Integrated Navigation Bar - Fixed to center vertically */}
+      {/* Hamburger Button - Mobile Only */}
+      <button
+        className="fixed top-6 left-6 z-[100] flex items-center justify-center w-12 h-12 rounded-xl bg-white/80 shadow-lg md:hidden"
+        onClick={toggleNav}
+        aria-label="Open navigation"
+      >
+        <span className="sr-only">Open navigation</span>
+        {/* Hamburger Icon */}
+        <svg width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2" className="text-blue-600">
+          <line x1="6" y1="9" x2="22" y2="9" />
+          <line x1="6" y1="14" x2="22" y2="14" />
+          <line x1="6" y1="19" x2="22" y2="19" />
+        </svg>
+      </button>
+
+      {/* Sidebar Navigation */}
       <motion.nav
-        className="fixed left-6 top-1/2 transform -translate-y-1/2 z-50 transition-all duration-300"
+        className={`
+        fixed left-6 top-1/2 transform -translate-y-1/2 z-50 transition-all duration-300
+        hidden md:block
+      `}
         initial={{ x: -100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.5 }}
@@ -1242,23 +1264,21 @@ export default function Portfolio() {
                 <Button
                   variant={dashboardView === "overview" ? "default" : "outline"}
                   onClick={() => setDashboardView("overview")}
-                  className="bg-blue-600 hover:bg-blue-700"
+                  className="mr-4"
                 >
-                  <Grid className="w-4 h-4 mr-2" />
                   Overview
                 </Button>
                 <Button
                   variant={dashboardView === "detailed" ? "default" : "outline"}
                   onClick={() => setDashboardView("detailed")}
+                  className="mr-4"
                 >
-                  <List className="w-4 h-4 mr-2" />
                   Detailed
                 </Button>
                 <Button
                   variant={dashboardView === "analytics" ? "default" : "outline"}
                   onClick={() => setDashboardView("analytics")}
                 >
-                  <BarChart3 className="w-4 h-4 mr-2" />
                   Analytics
                 </Button>
               </div>
